@@ -74,6 +74,7 @@ model:
             params:
               layer: hidden
               layer_idx: 11
+              # sdxl_clip1_path add
           # crossattn and vector cond
           - is_trainable: False
             input_key: txt
@@ -85,6 +86,7 @@ model:
               layer: penultimate
               always_return_pooled: True
               legacy: False
+              # add sdxl_clip2_cache_dir
           # vector cond
           - is_trainable: False
             input_key: original_size_as_tuple
