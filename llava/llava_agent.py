@@ -16,7 +16,7 @@ import glob as gb
 
 
 class LLavaAgent:
-    def __init__(self, model_path, device='cuda', conv_mode='vicuna_v1'):
+    def __init__(self, model_path, device='cuda', conv_mode='vicuna_v1', clip_path=None):
         self.device = device
         if torch.device(self.device).index is not None:
             device_map = {'model': torch.device(self.device).index, 'lm_head': torch.device(self.device).index}
@@ -25,7 +25,7 @@ class LLavaAgent:
         model_path = os.path.expanduser(model_path)
         model_name = get_model_name_from_path(model_path)
         tokenizer, model, image_processor, context_len = load_pretrained_model(
-            model_path, None, model_name, device=self.device, device_map=device_map)
+            model_path, None, model_name, device=self.device, device_map=device_map, extra_clip_model=clip_path)
         self.model = model
         self.image_processor = image_processor
         self.tokenizer = tokenizer

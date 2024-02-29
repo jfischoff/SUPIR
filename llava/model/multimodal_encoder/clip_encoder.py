@@ -6,7 +6,7 @@ from CKPT_PTH import LLAVA_CLIP_PATH
 
 
 class CLIPVisionTower(nn.Module):
-    def __init__(self, vision_tower, args, delay_load=False):
+    def __init__(self, vision_tower, args, delay_load=False, llava_clip_path=LLAVA_CLIP_PATH):
         super().__init__()
 
         self.is_loaded = False
@@ -16,15 +16,16 @@ class CLIPVisionTower(nn.Module):
         self.select_layer = args.mm_vision_select_layer
         self.select_feature = getattr(args, 'mm_vision_select_feature', 'patch')
 
+        self.llava_clip_path = llava_clip_path
         if not delay_load:
             self.load_model()
         else:
             # self.cfg_only = CLIPVisionConfig.from_pretrained(self.vision_tower_name)
-            self.cfg_only = CLIPVisionConfig.from_pretrained(LLAVA_CLIP_PATH)
+            self.cfg_only = CLIPVisionConfig.from_pretrained(self.llava_clip_path)
 
     def load_model(self):
-        self.image_processor = CLIPImageProcessor.from_pretrained(LLAVA_CLIP_PATH)
-        self.vision_tower = CLIPVisionModel.from_pretrained(LLAVA_CLIP_PATH)
+        self.image_processor = CLIPImageProcessor.from_pretrained(self.llava_clip_path)
+        self.vision_tower = CLIPVisionModel.from_pretrained(self.llava_clip_path)
         self.vision_tower.requires_grad_(False)
 
         self.is_loaded = True
