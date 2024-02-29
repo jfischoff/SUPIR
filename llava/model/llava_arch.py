@@ -26,11 +26,11 @@ from llava.constants import IGNORE_INDEX, IMAGE_TOKEN_INDEX, DEFAULT_IMAGE_PATCH
 
 class LlavaMetaModel:
 
-    def __init__(self, config):
+    def __init__(self, config, clip_path=None):
         super(LlavaMetaModel, self).__init__(config)
 
         if hasattr(config, "mm_vision_tower"):
-            self.vision_tower = build_vision_tower(config, delay_load=True)
+            self.vision_tower = build_vision_tower(config, clip_path, delay_load=True)
             self.mm_projector = build_vision_projector(config)
 
     def get_vision_tower(self):
